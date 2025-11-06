@@ -1,0 +1,81 @@
+# Simple Chatbot for Customer Interaction (Online Shopping Support)
+
+print("==============================================")
+print("      Welcome to ShopSmart Customer Support")
+print("==============================================")
+print("Type 'bye' anytime to end the chat.\n")
+
+while True:
+    user_input = input("You: ").lower()
+
+    if user_input in ["hi", "hello", "hey"]:
+        print("Bot: Hello! 👋 How can I assist you today?")
+    
+    elif "order" in user_input:
+        print("Bot: You can track your order by visiting 'My Orders' section or tell me your order ID.")
+    
+    elif "return" in user_input or "refund" in user_input:
+        print("Bot: To initiate a return or refund, please go to 'My Orders' → 'Return Item'.")
+    
+    elif "cancel" in user_input:
+        print("Bot: You can cancel your order within 24 hours of placing it. Would you like me to guide you?")
+    
+    elif "payment" in user_input or "money" in user_input:
+        print("Bot: We accept UPI, Debit/Credit Cards, and Cash on Delivery.")
+    
+    elif "product" in user_input or "item" in user_input:
+        print("Bot: Could you please mention the product name or category?")
+    
+    elif "thank" in user_input:
+        print("Bot: You're welcome! 😊 Happy to help.")
+    
+    elif "bye" in user_input:
+        print("Bot: Goodbye! Have a great day 😊")
+        break
+    
+    else:
+        print("Bot: I'm sorry, I didn't quite get that. Could you rephrase your question?")
+
+
+
+
+
+
+
+
+
+
+# output
+
+
+==============================================
+      Welcome to ShopSmart Customer Support
+==============================================
+Type 'bye' anytime to end the chat.
+
+You: hello
+Bot: Hello! 👋 How can I assist you today?
+
+You: I want to return my product
+Bot: To initiate a return or refund, please go to 'My Orders' → 'Return Item'.
+
+You: thank you
+Bot: You're welcome! 😊 Happy to help.
+
+You: bye
+Bot: Goodbye! Have a great day 😊
+
+
+🧠 How It Works
+
+The chatbot runs in a continuous loop (while True)
+
+It reads user input using input()
+
+Converts it to lowercase for easy comparison
+
+Checks for keywords (like order, return, payment, etc.)
+
+Responds with a pre-defined message
+
+Exits when the user types "bye"

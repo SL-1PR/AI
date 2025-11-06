@@ -1,0 +1,106 @@
+# Graph Coloring Problem using Backtracking (Constraint Satisfaction Problem)
+
+# Function to check if the current color assignment is valid for vertex v
+def is_safe(v, graph, colors, c, n):
+    for i in range(n):
+        if graph[v][i] == 1 and colors[i] == c:
+            return False
+    return True
+
+
+# Recursive function to solve the graph coloring problem
+def graph_coloring_util(graph, m, colors, v, n):
+    # Base Case: If all vertices are assigned a color, return True
+    if v == n:
+        return True
+
+    # Try assigning each color (1 to m)
+    for c in range(1, m + 1):
+        if is_safe(v, graph, colors, c, n):
+            colors[v] = c  # Assign color
+
+            # Recur to assign colors to the rest of the vertices
+            if graph_coloring_util(graph, m, colors, v + 1, n):
+                return True
+
+            # If assigning color c doesn't lead to a solution, backtrack
+            colors[v] = 0
+
+    return False
+
+
+# Function to solve the problem and print result
+def graph_coloring(graph, m):
+    n = len(graph)
+    colors = [0] * n
+
+    if graph_coloring_util(graph, m, colors, 0, n):
+        print("\nColor assignment for each vertex:")
+        for i in range(n):
+            print(f"Vertex {i+1} --> Color {colors[i]}")
+    else:
+        print("\nNo solution exists with the given number of colors.")
+
+
+# --- MAIN PROGRAM ---
+
+print("Graph Coloring Problem using Backtracking\n")
+
+# Example Graph (Adjacency Matrix)
+# Example with 4 vertices
+graph = [
+    [0, 1, 1, 1],  # A connected to B, C, D
+    [1, 0, 1, 0],  # B connected to A, C
+    [1, 1, 0, 1],  # C connected to A, B, D
+    [1, 0, 1, 0]   # D connected to A, C
+]
+
+# Number of colors available
+m = int(input("Enter the number of colors available: "))
+
+# Solve graph coloring
+graph_coloring(graph, m)
+
+
+
+# output
+
+Graph Coloring Problem using Backtracking
+
+Enter the number of colors available: 3
+
+Color assignment for each vertex:
+Vertex 1 --> Color 1
+Vertex 2 --> Color 2
+Vertex 3 --> Color 3
+Vertex 4 --> Color 2
+
+
+
+💡 Explanation
+
+CSP Components:
+
+Variables: Vertices of the graph
+
+Domains: Available colors (1 to m)
+
+Constraints: No two adjacent vertices can have the same color
+
+Algorithm logic:
+
+Try coloring one vertex at a time.
+
+For each vertex, try all possible colors.
+
+If a color violates the constraint (same color on connected vertex) → backtrack.
+
+Continue until all vertices are colored or no valid coloring exists.
+
+🧠 Key Points
+
+This is a Backtracking CSP solution (try → check → backtrack).
+
+Works for any number of vertices and any number of colors.
+
+Can be easily modified to take user input for graph edges if needed.

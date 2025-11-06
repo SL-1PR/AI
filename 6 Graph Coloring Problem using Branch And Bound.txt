@@ -1,0 +1,110 @@
+# Graph Coloring Problem using Branch and Bound (CSP)
+
+# Function to check if the current color assignment is safe for a vertex
+def is_safe(node, color, graph, colors, n):
+    for neighbor in range(n):
+        # If there is an edge and both nodes have the same color → invalid
+        if graph[node][neighbor] == 1 and colors[neighbor] == color:
+            return False
+    return True
+
+
+# Recursive function to solve graph coloring using Branch and Bound
+def graph_coloring_util(graph, m, colors, node, n, best_solution, best_bound):
+    # Base Case: All vertices are assigned a color
+    if node == n:
+        used_colors = len(set(colors))
+        # Bound check: update if better (fewer colors)
+        if used_colors < best_bound[0]:
+            best_bound[0] = used_colors
+            best_solution[:] = colors[:]
+        return
+
+    # Try assigning each color to the vertex
+    for color in range(1, m + 1):
+        if is_safe(node, color, graph, colors, n):
+            colors[node] = color
+
+            # Bound pruning: stop if we already exceed best known colors
+            if len(set(colors[:node+1])) <= best_bound[0]:
+                graph_coloring_util(graph, m, colors, node + 1, n, best_solution, best_bound)
+
+            # Backtrack
+            colors[node] = 0
+
+
+def graph_coloring_branch_and_bound(graph, m):
+    n = len(graph)
+    colors = [0] * n
+    best_solution = [0] * n
+    best_bound = [m + 1]  # Start with a large bound
+
+    graph_coloring_util(graph, m, colors, 0, n, best_solution, best_bound)
+    return best_solution, best_bound[0]
+
+
+# --- MAIN PROGRAM ---
+
+# Example graph (Adjacency Matrix)
+# This is a simple undirected graph with 4 vertices
+graph = [
+    [0, 1, 1, 1],  # A connected to B, C, D
+    [1, 0, 1, 0],  # B connected to A, C
+    [1, 1, 0, 1],  # C connected to A, B, D
+    [1, 0, 1, 0]   # D connected to A, C
+]
+
+print("Graph Coloring Problem using Branch and Bound\n")
+
+# Number of colors allowed (upper limit)
+m = int(input("Enter the maximum number of colors allowed: "))
+
+solution, min_colors_used = graph_coloring_branch_and_bound(graph, m)
+
+print("\nMinimum colors required:", min_colors_used)
+print("Color assigned to each vertex:")
+
+for i, c in enumerate(solution):
+    print(f"Vertex {i+1} --> Color {c}")
+
+
+
+
+
+
+# Output 
+Graph Coloring Problem using Branch and Bound
+
+Enter the maximum number of colors allowed: 4
+
+Minimum colors required: 3
+Color assigned to each vertex:
+Vertex 1 --> Color 1
+Vertex 2 --> Color 2
+Vertex 3 --> Color 3
+Vertex 4 --> Color 2
+
+
+
+
+💡 Explanation
+
+Each vertex must be assigned a color such that no two adjacent vertices share the same color.
+
+The Branch and Bound approach:
+
+Branch: Assign a color to a vertex.
+
+Bound: Stop exploring a branch if the current number of colors already exceeds the best (minimum) found so far.
+
+The goal is to minimize the total number of colors used — this is the optimization bound.
+
+🧠 Key CSP Features
+
+Variables → Vertices of the graph
+
+Domains → Available colors (1, 2, 3, …, m)
+
+Constraints → Adjacent vertices must have different colors
+
+Objective → Use the minimum number of colors (optimized using Branch and Bound)

@@ -1,0 +1,80 @@
+# N-Queens Problem using Branch and Bound
+
+def print_solution(board, n):
+    for i in range(n):
+        for j in range(n):
+            print(board[i][j], end=' ')
+        print()
+    print()
+
+# Function to check if a queen can be placed at board[row][col]
+def is_safe(row, col, cols, diag1, diag2, n):
+    return not (cols[col] or diag1[row + col] or diag2[row - col + n - 1])
+
+# Recursive function for Branch and Bound
+def solve_nqueens(row, board, cols, diag1, diag2, n, solutions):
+    if row == n:
+        # Found a valid arrangement
+        solution = [''.join(row) for row in board]
+        solutions.append(solution)
+        return
+
+    for col in range(n):
+        if is_safe(row, col, cols, diag1, diag2, n):
+            # Place queen
+            board[row][col] = 'Q'
+            cols[col] = diag1[row + col] = diag2[row - col + n - 1] = True
+
+            # Move to next row
+            solve_nqueens(row + 1, board, cols, diag1, diag2, n, solutions)
+
+            # Backtrack (Remove queen)
+            board[row][col] = '.'
+            cols[col] = diag1[row + col] = diag2[row - col + n - 1] = False
+
+
+def n_queens_branch_and_bound(n):
+    board = [['.' for _ in range(n)] for _ in range(n)]
+    cols = [False] * n
+    diag1 = [False] * (2 * n - 1)  # major diagonal
+    diag2 = [False] * (2 * n - 1)  # minor diagonal
+    solutions = []
+
+    solve_nqueens(0, board, cols, diag1, diag2, n, solutions)
+    return solutions
+
+
+# --- MAIN PROGRAM ---
+n = int(input("Enter the value of N for N-Queens problem: "))
+solutions = n_queens_branch_and_bound(n)
+
+print(f"\nTotal solutions for {n}-Queens problem: {len(solutions)}\n")
+for idx, sol in enumerate(solutions):
+    print(f"Solution {idx + 1}:")
+    for row in sol:
+        print(row)
+    print()
+
+
+
+
+
+
+
+# output 
+
+Enter the value of N for N-Queens problem: 4
+
+Total solutions for 4-Queens problem: 2
+
+Solution 1:
+.Q..
+...Q
+Q...
+..Q.
+
+Solution 2:
+..Q.
+Q...
+...Q
+.Q..

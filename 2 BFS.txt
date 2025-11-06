@@ -1,0 +1,120 @@
+# BFS Simple Code
+
+# Breadth First Search (BFS) for a Predefined Tree
+
+from collections import deque
+
+def bfs(tree, root):
+    visited = set()
+    queue = deque([root])
+
+    print("BFS Traversal starting from node", root, ":")
+    while queue:
+        node = queue.popleft()
+        if node not in visited:
+            print(node, end=" ")
+            visited.add(node)
+            for child in tree[node]:
+                if child not in visited:
+                    queue.append(child)
+    print()
+
+
+# --- MAIN PROGRAM ---
+# Predefined tree (undirected)
+tree = {
+    0: [1, 2],
+    1: [0, 3, 4],
+    2: [0],
+    3: [1],
+    4: [1]
+}
+
+root = 0
+bfs(tree, root)
+
+
+
+
+
+
+
+
+# BFS Code With Input  
+
+
+# Breadth First Search (BFS) Algorithm using Recursion
+# For an Undirected Tree
+
+from collections import deque
+
+# Recursive BFS function
+def bfs_recursive(queue, tree, visited):
+    if not queue:
+        return
+
+    # Dequeue one node
+    node = queue.popleft()
+    print(node, end=" ")
+
+    # Visit all unvisited adjacent (child) nodes
+    for child in tree[node]:
+        if not visited[child]:
+            visited[child] = True
+            queue.append(child)
+
+    # Recursive call for remaining nodes in queue
+    bfs_recursive(queue, tree, visited)
+
+
+# --- MAIN PROGRAM ---
+print("Breadth First Search (BFS) for a Tree Data Structure\n")
+
+# Input number of nodes
+n = int(input("Enter the number of nodes in the tree: "))
+
+# Initialize adjacency list
+tree = {i: [] for i in range(n)}
+
+# Input edges (tree has n-1 edges)
+print("\nEnter the edges of the tree (u v):")
+for i in range(n - 1):
+    u, v = map(int, input(f"Edge {i+1}: ").split())
+    tree[u].append(v)
+    tree[v].append(u)
+
+# Input root node
+root = int(input("\nEnter the root node to start BFS: "))
+
+# Keep track of visited nodes
+visited = [False] * n
+visited[root] = True
+
+# Create a queue and enqueue the root
+queue = deque([root])
+
+# Perform BFS traversal
+print("\nBFS Traversal of the tree starting from root node", root, ":")
+bfs_recursive(queue, tree, visited)
+print()
+
+
+
+# Output 
+
+Enter the number of nodes in the tree: 5
+Enter the edges of the tree (u v):
+Edge 1: 0 1
+Edge 2: 0 2
+Edge 3: 1 3
+Edge 4: 1 4
+Enter the root node to start BFS: 0
+
+
+
+Breadth First Search (BFS) for a Tree Data Structure
+
+BFS Traversal of the tree starting from root node 0 :
+0 1 2 3 4
+
+
